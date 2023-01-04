@@ -7,7 +7,7 @@ const cors = require('cors')
 const cookieParser = require('cookie-parser')
 const AuthRoute =  require('./routes/AuthRoute')
 const ProductRoute = require('./routes/ProductRoute')
-// const catRoute = require('./routes/CategoryRoute')
+const CatRoute = require('./routes/CategoryRoute')
 const OrderRoute = require('./routes/OrderRoute')
 const WishListRoute = require('./routes/WishListRoute')
 const MessageRoute = require('./routes/MessageRoute')
@@ -29,7 +29,7 @@ db.once('open', function(){
 
 
   // app.use((req, res, next) => {
-  //   res.header("Access-Control-Allow-Origin", "http://localhost:3000/")
+  //   res.header("Access-Control-Allow-Origin", "*")
   //   res.header(
   //     "Access-Control-Allow-Headers",
   //     "Origin, X-Requested, Content-Type, Accept Authorization"
@@ -65,7 +65,7 @@ db.once('open', function(){
 
   app.use(AuthRoute)
   app.use(ProductRoute)
-  // app.use( catRoute )
+  app.use( CatRoute )
   app.use(OrderRoute)
   app.use(WishListRoute)
   app.use(MessageRoute)
