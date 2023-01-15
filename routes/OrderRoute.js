@@ -209,7 +209,7 @@ OrderRoute.get(
   asyncHandler(async (req, res) => {
  const {id} = req.params
 
- await Product.find({user: id}).then(orders => res.json({orders}))
+ await Order.find({user: id}).then(orders => res.json({orders}))
 
 
   })
