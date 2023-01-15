@@ -202,7 +202,17 @@ OrderRoute.get(
   })
 );
 
+OrderRoute.get(
+  "/cart/buyer_orders/:id",
+  verify,
+  authAdmin,
+  asyncHandler(async (req, res) => {
+ const {id} = req.params
+
+ await Product.find({user: id}).then(orders => res.json({orders}))
 
 
+  })
+);
 
 module.exports = OrderRoute;
