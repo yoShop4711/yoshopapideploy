@@ -208,8 +208,9 @@ OrderRoute.get(
   authAdmin,
   asyncHandler(async (req, res) => {
  const {id} = req.params
+ const {status} = req.body
 
- await Order.find({user: id}).then(orders => res.json({orders}))
+ await Order.find({user: id, status: status }).then(orders => res.json({orders}))
 
 
   })
