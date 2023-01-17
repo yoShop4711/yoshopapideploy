@@ -180,6 +180,16 @@ await Product.find({createdBy: req.user.id}).then(products => res.json({products
 
 }))
 
+ProductRoute.get('/api/see_seller_products/:id', verify, authAdmin, asyncHandler(async(req, res) => {
+ const{id} = req.params
+
+  await Product.find({createdBy: id}).then(products => res.json({products}))
+  
+  
+  
+  }))
+  
+
 
 
 ProductRoute.get('/api/show_products', asyncHandler(async(req, res) => {
