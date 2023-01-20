@@ -11,6 +11,8 @@ const CatRoute = require('./routes/CategoryRoute')
 const OrderRoute = require('./routes/OrderRoute')
 const WishListRoute = require('./routes/WishListRoute')
 const MessageRoute = require('./routes/MessageRoute')
+const ProfilePhotoRoute = require('./routes/ProfilePhotoRoute')
+const ProductPhotoRoute = require('./routes/ProductPhotoRoute')
 const path = require('path')
 
 
@@ -69,16 +71,9 @@ db.once('open', function(){
   app.use(OrderRoute)
   app.use(WishListRoute)
   app.use(MessageRoute)
+  app.use(ProfilePhotoRoute)
+  app.use(ProductPhotoRoute)
 
-
-//   if(process.env.NODE_ENV === 'production'){
-//     app.use(express.static('client/build'))
-//     app.get('*', (req, res) => {
-//         res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'))
-//     })
-// }
-
-  
 
 
   app.listen(port, () => {

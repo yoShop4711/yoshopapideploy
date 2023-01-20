@@ -5,37 +5,14 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const verify = require("../middleware/verify");
 const authAdmin = require("../middleware/authAdmin");
-const authSeller = require("../middleware/authSeller");
-const multer = require("multer");
-const path = require('path');
-const fs = require("fs");
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, path.resolve(__dirname, '..', 'public'));
-  },
-  filename: function (req, file, cb) {
-    cb(null, new Date().toISOString().replace(/:/g, "-") + file.originalname);
-  },
-});
-
-
-const upload = multer({ storage });
-
-
 
 AuthRoute.post(
   "/auth/register",
-  upload.single('userImage')
-  ,
   asyncHandler(async (req, res) => {
   
+let { fullname, username, email, userImage, password,location, question } = req.body;
 
-  
-
-  let { fullname, username, email, password,location, question } = req.body;
-
-    if (!fullname || !username || !email || !question || !password  || !location ) {
+    if (!fullname || !username || !email || !question || !userImage || !password  || !location ) {
       res.json({ msg: "input box cannot be empty!" });
     }
 
@@ -62,11 +39,7 @@ AuthRoute.post(
     email,
     question,
     password: hashedPassword,
-    userImage: { 
-      data: fs.readFileSync("./public/" + req.file.filename),
-      contentType: "image/jpg"
-      },
-    
+    userImage,
     location,
   });
 

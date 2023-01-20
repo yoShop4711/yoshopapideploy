@@ -31,8 +31,8 @@ type: String,
 required: true
 },
 userImage: {
-    data: Buffer,
-    contentType: String
+    type: String,
+    required: true
 
 },
 role: {
