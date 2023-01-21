@@ -5,7 +5,10 @@ const verify = require("../middleware/verify");
 const authSeller = require("../middleware/authSeller");
 const authAdmin = require("../middleware/authAdmin");
 const asyncHandler = require("express-async-handler");
+const multer = require("multer");
 const { query } = require("express");
+const fs = require('fs')
+
 
 
 
@@ -42,15 +45,21 @@ class APIfeatures {
 
     return this;
   }
-  // paginating() {
-  //   // const page = this.queryString.page * 1 || 1;
-  //   // const limit = this.queryString.limit * 1 || 8;
-  //   const skip = (page - 1) * limit;
-  //   this.query = this.query.skip(skip).limit(limit);
-
-  //   return this;
-  // }
+  
 }
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "./public/");
+  },
+  filename: function (req, file, cb) {
+    cb(null, new Date().toISOString().replace(/:/g, "-") + file.originalname);
+  },
+});
+
+
+const upload = multer({ storage });
+
 
 
 
@@ -58,6 +67,7 @@ ProductRoute.post(
   "/api/create_product",
   verify,
   authSeller,
+  upload.single('productImage'),
   asyncHandler(async (req, res) => {
     const {
       productName,
@@ -74,7 +84,6 @@ ProductRoute.post(
       !productDescription ||
       !productQuantity ||
       !productAvailability ||
-      !productImage ||
       !productPrice ||
       !categor
     ) {
@@ -89,7 +98,10 @@ ProductRoute.post(
       productQuantity,
       productAvailability,
       productPrice,
-      productImage,
+      productImage: { 
+        data: fs.readFileSync("./public/" + req.file.filename),
+        contentType: "image/jpg"
+        },
       categor,
       createdBy: req.user.id
       

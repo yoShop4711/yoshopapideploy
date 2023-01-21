@@ -5,14 +5,31 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const verify = require("../middleware/verify");
 const authAdmin = require("../middleware/authAdmin");
+const multer = require("multer");
+const path = require('path');
+const fs = require("fs");
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.resolve(__dirname, '..', 'public'));
+  },
+  filename: function (req, file, cb) {
+    cb(null, new Date().toISOString().replace(/:/g, "-") + file.originalname);
+  },
+});
+
+
+const upload = multer({ storage });
+
 
 AuthRoute.post(
   "/auth/register",
+  upload.single('userImage'),
   asyncHandler(async (req, res) => {
   
-let { fullname, username, email, userImage, password,location, question } = req.body;
+let { fullname, username, email, password, location, question } = req.body;
 
-    if (!fullname || !username || !email || !question || !userImage || !password  || !location ) {
+    if (!fullname || !username || !email || !question ||  !password  || !location ) {
       res.json({ msg: "input box cannot be empty!" });
     }
 
@@ -34,12 +51,15 @@ let { fullname, username, email, userImage, password,location, question } = req.
   const hashedPassword = await  bcrypt.hash(password, salt);
 
  await User.create  ({
-      fullname,
+    fullname,
     username,
     email,
     question,
     password: hashedPassword,
-    userImage,
+    userImage: { 
+      data: fs.readFileSync("./public/" + req.file.filename),
+      contentType: "image/jpg"
+      },
     location,
   });
 
@@ -57,6 +77,7 @@ AuthRoute.post(
     const { username, password } = req.body;
 
     const userExists = await User.findOne({ username }).select("+password");
+    
 
     if (!userExists) {
       res.json({
@@ -84,7 +105,7 @@ AuthRoute.post(
       
     } else {
       res.json({ msg: "check your password again" });
-    }
+    } 
   
 
   

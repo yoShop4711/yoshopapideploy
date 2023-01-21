@@ -22,11 +22,9 @@ const ProductSchema = mongoose.Schema({
         ref: 'User'
     },
     productImage: {
-        type: String,
-    required: true
-
-    
-    },
+        data: Buffer,
+        contentType: String
+},
     productPrice: {
         type: Number,
         required: true

@@ -11,8 +11,6 @@ const CatRoute = require('./routes/CategoryRoute')
 const OrderRoute = require('./routes/OrderRoute')
 const WishListRoute = require('./routes/WishListRoute')
 const MessageRoute = require('./routes/MessageRoute')
-const ProfilePhotoRoute = require('./routes/ProfilePhotoRoute')
-const ProductPhotoRoute = require('./routes/ProductPhotoRoute')
 const path = require('path')
 
 
@@ -71,8 +69,7 @@ db.once('open', function(){
   app.use(OrderRoute)
   app.use(WishListRoute)
   app.use(MessageRoute)
-  app.use(ProfilePhotoRoute)
-  app.use(ProductPhotoRoute)
+
 
 
 
